@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoCart — Shop the Future</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- ─── NAV ─────────────────────────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="scrollToSection('home')">NeoCart</div>
+
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="scrollToSection('categories')">Categories</a></li>
+    <li><a href="#" onclick="scrollToSection('products')">Products</a></li>
+    <li><a href="#" onclick="scrollToSection('deals')">Deals</a></li>
+    <li><a href="#" onclick="scrollToSection('about')">About</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <div class="nav-search">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products..." id="searchInput" oninput="handleSearch(this.value)" autocomplete="off">
+    </div>
+    <div class="icon-btn" title="Wishlist" id="wishlistBtn" onclick="openWishlistDrawer()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="wishlist-badge" id="wishlistBadge" style="display:none">0</span>
+    </div>
+    <div class="icon-btn" onclick="openCart()" title="Cart">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cart-badge" id="cartBadge" style="display:none">0</span>
+    </div>
+    <div id="authButtons" class="auth-nav-btns">
+      <button class="btn-nav-outline" onclick="openAuth('login')">Sign In</button>
+      <button class="btn-nav-fill" onclick="openAuth('register')">Join Free</button>
+    </div>
+    <div id="userMenu" class="user-menu" style="display:none">
+      <button class="user-avatar-btn" onclick="toggleUserDropdown()" id="userAvatarBtn">
+        <span id="userInitial">U</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown">
+        <div class="dropdown-header">
+          <div class="dropdown-name" id="dropdownName">User</div>
+          <div class="dropdown-email" id="dropdownEmail">user@email.com</div>
+        </div>
+        <a class="dropdown-item" onclick="openOrdersModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          My Orders
+        </a>
+        <a class="dropdown-item" onclick="openWishlistDrawer()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Wishlist
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item danger" onclick="logout()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="toggleMobileMenu()"></div>
+
+<!-- ─── HERO ─────────────────────────────────────────────────────────────── -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    New Season, New Arrivals
+  </div>
+  <h1>Shop the<br><span class="gradient-text">Future</span> Today</h1>
+  <p>Discover curated collections across tech, fashion, home, and lifestyle — all in one beautifully designed space.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="scrollToSection('products')">Explore Products &rarr;</button>
+    <button class="btn-ghost" onclick="scrollToSection('deals')">View Deals</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-number">12K+</div><div class="stat-label">Products</div></div>
+    <div class="stat"><div class="stat-number">98%</div><div class="stat-label">Satisfaction</div></div>
+    <div class="stat"><div class="stat-number">50+</div><div class="stat-label">Brands</div></div>
+    <div class="stat"><div class="stat-number">2.4M</div><div class="stat-label">Customers</div></div>
+  </div>
+</section>
+
+<!-- ─── CATEGORIES ───────────────────────────────────────────────────────── -->
+<section class="categories" id="categories">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Browse by</div>
+      <h2 class="section-title">Categories</h2>
+      <p class="section-sub">Find exactly what you're looking for across our curated collections.</p>
+    </div>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-card" onclick="filterAndScroll('Electronics')">
+      <span class="cat-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg>
+      </span>
+      <div class="cat-name">Electronics</div><div class="cat-count">2,340 items</div>
+    </a>
+    <a class="cat-card" onclick="filterAndScroll('Fashion')">
+      <span class="cat-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+      </span>
+      <div class="cat-name">Fashion</div><div class="cat-count">4,120 items</div>
+    </a>
+    <a class="cat-card" onclick="filterAndScroll('Home')">
+      <span class="cat-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </span>
+      <div class="cat-name">Home & Living</div><div class="cat-count">1,890 items</div>
+    </a>
+    <a class="cat-card" onclick="filterAndScroll('Sports')">
+      <span class="cat-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M4.93 4.93c4.29 4.29 10.55 5.37 15.14 3.07M4.93 19.07c4.29-4.29 5.37-10.55 3.07-15.14"/></svg>
+      </span>
+      <div class="cat-name">Sports</div><div class="cat-count">980 items</div>
+    </a>
+    <a class="cat-card" onclick="filterAndScroll('Beauty')">
+      <span class="cat-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      <div class="cat-name">Beauty</div><div class="cat-count">2,100 items</div>
+    </a>
+    <a class="cat-card" onclick="filterAndScroll('Gaming')">
+      <span class="cat-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15" cy="13" r="1" fill="currentColor"/><circle cx="17" cy="11" r="1" fill="currentColor"/><path d="M5 8h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z"/></svg>
+      </span>
+      <div class="cat-name">Gaming</div><div class="cat-count">750 items</div>
+    </a>
+  </div>
+</section>
+
+<!-- ─── PRODUCTS ─────────────────────────────────────────────────────────── -->
+<section id="products">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Featured</div>
+      <h2 class="section-title">Top Products</h2>
+      <p class="section-sub">Hand-picked for quality, value, and style.</p>
+    </div>
+  </div>
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" onclick="filterProducts('All', this)">All</button>
+    <button class="filter-tab" onclick="filterProducts('Electronics', this)">Electronics</button>
+    <button class="filter-tab" onclick="filterProducts('Fashion', this)">Fashion</button>
+    <button class="filter-tab" onclick="filterProducts('Home', this)">Home</button>
+    <button class="filter-tab" onclick="filterProducts('Sports', this)">Sports</button>
+    <button class="filter-tab" onclick="filterProducts('Gaming', this)">Gaming</button>
+    <button class="filter-tab" onclick="filterProducts('Beauty', this)">Beauty</button>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+  <div class="no-results" id="noResults" style="display:none">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:16px;color:var(--muted)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <h3>No products found</h3>
+    <p>Try a different search term or category.</p>
+    <button class="btn-primary" onclick="clearSearch()">Clear Search</button>
+  </div>
+</section>
+
+<!-- ─── PROMO / DEALS ────────────────────────────────────────────────────── -->
+<div id="deals">
+  <div class="promo">
+    <div class="promo-bg"></div>
+    <div class="promo-inner">
+      <div class="promo-text">
+        <div class="section-eyebrow">Limited Time Offer</div>
+        <h2>Flash Sale &mdash; Up to <span class="accent2">60% Off</span></h2>
+        <p>Grab these exclusive deals before the timer runs out.</p>
+        <div class="promo-code">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          <span class="promo-code-text">NEOCART25</span>
+          <span class="promo-code-sub">25% off your first order</span>
+        </div>
+      </div>
+      <div class="promo-countdown">
+        <p class="countdown-label-top">Ends in</p>
+        <div class="countdown-display">
+          <div class="countdown-unit"><span class="countdown-num" id="countH">08</span><div class="countdown-label">Hours</div></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit"><span class="countdown-num" id="countM">34</span><div class="countdown-label">Mins</div></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit"><span class="countdown-num" id="countS">12</span><div class="countdown-label">Secs</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FEATURES ─────────────────────────────────────────────────────────── -->
+<section class="features" id="about">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Why Choose Us</div>
+      <h2 class="section-title">Built Different</h2>
+    </div>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <div class="feature-title">Lightning Delivery</div>
+      <p>Same-day delivery in 50+ cities. Express shipping tracked in real time.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="feature-title">Secure Payments</div>
+      <p>256-bit encryption, PCI-DSS compliant. Your data is never stored.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg>
+      </div>
+      <div class="feature-title">Easy Returns</div>
+      <p>30-day no-questions returns. Free pick-up, instant refund processed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="feature-title">24/7 Support</div>
+      <p>NeoBot is always on. Human agents available 9am–10pm.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── NEWSLETTER ───────────────────────────────────────────────────────── -->
+<section class="newsletter">
+  <div class="newsletter-inner">
+    <div class="section-eyebrow" style="text-align:center">Stay in the loop</div>
+    <h2>Get deals before anyone else</h2>
+    <p>Join 400K+ shoppers who get early access to sales and exclusive drops.</p>
+    <div class="newsletter-form">
+      <input type="email" class="newsletter-input" placeholder="Enter your email" id="newsletterEmail">
+      <button class="btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="footer-logo">NeoCart</span>
+      <p class="footer-desc">The next generation e-commerce platform. Curated products, seamless delivery, and a shopping experience designed for how you actually live.</p>
+    </div>
+    <div class="footer-col"><h4>Shop</h4>
+      <ul class="footer-links">
+        <li><a href="#" onclick="scrollToSection('products')">New Arrivals</a></li>
+        <li><a href="#" onclick="filterAndScroll('Electronics')">Electronics</a></li>
+        <li><a href="#" onclick="scrollToSection('deals')">Flash Deals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col"><h4>Account</h4>
+      <ul class="footer-links">
+        <li><a href="#" onclick="openAuth('login')">Sign In</a></li>
+        <li><a href="#" onclick="openAuth('register')">Create Account</a></li>
+        <li><a href="#" onclick="openOrdersModal()">Track Order</a></li>
+      </ul>
+    </div>
+    <div class="footer-col"><h4>Support</h4>
+      <ul class="footer-links">
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Returns &amp; Refunds</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 NeoCart. All rights reserved.</span>
+    <div class="footer-payments">
+      <span class="payment-badge">Visa</span>
+      <span class="payment-badge">Mastercard</span>
+      <span class="payment-badge">PayPal</span>
+      <span class="payment-badge">UPI</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── OVERLAYS ─────────────────────────────────────────────────────────── -->
+<div class="overlay" id="overlay" onclick="closeAllDrawers()"></div>
+
+<!-- ─── CART DRAWER ──────────────────────────────────────────────────────── -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">Your Cart <span id="cartItemCount" class="drawer-count"></span></div>
+    <button class="close-btn" onclick="closeCart()">&#10005;</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+    <div class="cart-total-row"><span>Shipping</span><span class="success">Free</span></div>
+    <div class="cart-divider"></div>
+    <div class="cart-total-row grand"><span>Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="cart-checkout-btn" onclick="checkout()">Checkout Securely</button>
+  </div>
+</div>
+
+<!-- ─── WISHLIST DRAWER ───────────────────────────────────────────────────── -->
+<div class="cart-drawer" id="wishlistDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">Wishlist <span id="wishlistCount" class="drawer-count"></span></div>
+    <button class="close-btn" onclick="closeWishlistDrawer()">&#10005;</button>
+  </div>
+  <div class="drawer-body" id="wishlistBody"></div>
+</div>
+
+<!-- ─── AUTH MODAL ───────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="authOverlay" onclick="closeAuth()"></div>
+<div class="modal" id="authModal">
+  <button class="modal-close" onclick="closeAuth()">&#10005;</button>
+  <div id="loginPanel">
+    <div class="modal-logo">NeoCart</div>
+    <h2 class="modal-title">Welcome back</h2>
+    <p class="modal-sub">Sign in to access your cart, orders, and wishlist.</p>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="you@example.com" class="form-input" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" class="form-input" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="form-error" id="loginError"></div>
+    <button class="btn-primary btn-full" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <div class="modal-switch">Don't have an account? <a onclick="switchAuth('register')">Join free</a></div>
+  </div>
+  <div id="registerPanel" style="display:none">
+    <div class="modal-logo">NeoCart</div>
+    <h2 class="modal-title">Create account</h2>
+    <p class="modal-sub">Join 2.4M+ shoppers on NeoCart.</p>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="registerName" placeholder="Your name" class="form-input" onkeydown="if(event.key==='Enter')doRegister()">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="registerEmail" placeholder="you@example.com" class="form-input" onkeydown="if(event.key==='Enter')doRegister()">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="registerPassword" placeholder="Min. 6 characters" class="form-input" onkeydown="if(event.key==='Enter')doRegister()">
+    </div>
+    <div class="form-error" id="registerError"></div>
+    <button class="btn-primary btn-full" id="registerBtn" onclick="doRegister()">Create Account</button>
+    <div class="modal-switch">Already have an account? <a onclick="switchAuth('login')">Sign in</a></div>
+  </div>
+</div>
+
+<!-- ─── ORDERS MODAL ─────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="ordersOverlay" onclick="closeOrdersModal()"></div>
+<div class="modal modal-wide" id="ordersModal">
+  <button class="modal-close" onclick="closeOrdersModal()">&#10005;</button>
+  <h2 class="modal-title">My Orders</h2>
+  <div id="ordersContent"></div>
+</div>
+
+<!-- ─── CHECKOUT MODAL ───────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
+<div class="modal" id="checkoutModal">
+  <button class="modal-close" onclick="closeCheckout()">&#10005;</button>
+  <h2 class="modal-title">Checkout</h2>
+  <div class="checkout-summary" id="checkoutSummary"></div>
+  <div class="form-group"><label>Delivery Address</label><textarea class="form-input" id="deliveryAddress" placeholder="Enter your full address" rows="3"></textarea></div>
+  <div class="form-group"><label>Phone Number</label><input type="tel" class="form-input" id="phoneNumber" placeholder="+91 XXXXX XXXXX"></div>
+  <div class="form-group"><label>Payment Method</label>
+    <select class="form-input" id="paymentMethod">
+      <option>UPI / BHIM</option>
+      <option>Credit / Debit Card</option>
+      <option>Cash on Delivery</option>
+      <option>Net Banking</option>
+    </select>
+  </div>
+  <div class="form-error" id="checkoutError"></div>
+  <button class="btn-primary btn-full" onclick="confirmOrder()">Place Order</button>
+</div>
+
+<!-- ─── TOAST ─────────────────────────────────────────────────────────────── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ─── CHATBOT ──────────────────────────────────────────────────────────── -->
+<button class="chatbot-fab" id="chatFab" onclick="toggleChat()" title="Chat with NeoBot">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M8 14h8a4 4 0 0 1 4 4v1H4v-1a4 4 0 0 1 4-4z"/></svg>
+    </div>
+    <div class="chatbot-info">
+      <div class="chatbot-name">NeoBot</div>
+      <div class="chatbot-status">Online &mdash; always ready</div>
+    </div>
+    <button class="chatbot-close" onclick="toggleChat()">&#10005;</button>
+  </div>
+  <div class="chatbot-messages" id="chatMessages"></div>
+  <div class="chatbot-quick-replies" id="quickReplies"></div>
+  <div class="chatbot-input-area">
+    <textarea class="chatbot-input" id="chatInput" placeholder="Ask me anything..." rows="1" onkeydown="handleChatKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="chatbot-send" onclick="sendChatMessage()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
