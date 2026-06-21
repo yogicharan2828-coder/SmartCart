@@ -106,7 +106,7 @@ smartcart/
 
 Clone the repository:
 
-git clone https://github.com/YOUR_USERNAME/smartcart.git
+git clone https://github.com/yogicharan2828-coder/SmartCart.git
 
 Navigate to the project directory:
 
