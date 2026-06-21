@@ -3,8 +3,7 @@
 SmartCart is a modern full-stack e-commerce platform built using Flask, MySQL, HTML, CSS, and JavaScript. The application provides a complete online shopping experience with product browsing, user authentication, shopping cart management, wishlist functionality, checkout processing, and an AI-powered shopping assistant.
 
 ## 🚀 Live Demo
-
-[https://smartcart-9quv.onrender.com/]
+https://smartcart-9quv.onrender.com/
 
 ## 📌 Features
 
