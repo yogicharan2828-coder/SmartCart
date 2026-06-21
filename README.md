@@ -4,7 +4,7 @@ SmartCart is a modern full-stack e-commerce platform built using Flask, MySQL, H
 
 ## 🚀 Live Demo
 
-[https://smartcart-0v74.onrender.com/]
+[https://smartcart-9quv.onrender.com/]
 
 ## 📌 Features
 
